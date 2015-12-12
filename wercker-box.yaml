@@ -1,5 +1,5 @@
-name: ikemonn/terraform-box
-version: 0.0.2
+name: terraform-box
+version: 0.0.3
 inherits: wercker/debian
 type: language
 platform: ubuntu@12.04
