@@ -1,0 +1,23 @@
+name: terraform-box
+version: 0.0.1
+inherits: wercker/debian
+type: language
+platform: ubuntu@12.04
+description: Wercker box for terraform
+keywords:
+  - terraform
+    script: |
+      sudo apt-get update -y
+      sudo apt-get -f install
+      sudo apt-get install -y wget unzip curl
+
+      # create terraform directory and export PATH
+      mkdir -p $HOME/terraform
+      export PATH=$PATH:$HOME/terraform
+
+      # download terraform
+      VERSION=0.6.8
+      cd $HOME/terraform
+      wget https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip
+      unzip terraform_${VERSION}_linux_amd64.zip
+      rm terraform_${VERSION}_linux_amd64.zip
