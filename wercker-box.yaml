@@ -1,7 +1,7 @@
 name: terraform-box
 version: 0.0.3
-inherits: wercker/debian
-type: language
+inherits: wercker/ubuntu12.04-webessentials@0.0.3
+type: service
 platform: ubuntu@12.04
 description: Wercker box for terraform
 keywords:
@@ -9,7 +9,7 @@ keywords:
     script: |
       sudo apt-get update -y
       sudo apt-get -f install
-      sudo apt-get install -y wget unzip curl
+      sudo apt-get install -y unzip
 
       # create terraform directory and export PATH
       mkdir -p $HOME/terraform
