@@ -1,4 +1,4 @@
-box: debian
+box: wercker/box-ubuntu12.04-webessentials
 build:
   steps:
     - script:
@@ -13,4 +13,5 @@ build:
           pwd
           ls -la
           ls -l /bin/sh
+          which git
           bash ./terraform/check_env.sh
