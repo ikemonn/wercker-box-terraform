@@ -12,4 +12,8 @@ build:
         code: |
           pwd
           ls -la
+          cd terraform
+          ls -la
+          cd aws
+          ls -la
           sh ./terraform/aws/check_env.sh
