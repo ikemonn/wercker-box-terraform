@@ -1,4 +1,4 @@
-box: leipert/ubuntu14.04-webessentials
+box: ubuntu
 build:
   steps:
     - script:
@@ -7,6 +7,12 @@ build:
           echo "This is wercker box for terraform!!"
           pwd
           ls -la
+    - script:
+        name: install some tools
+        code: |
+          sudo apt-get update
+          sudo apt-get -f install
+          sudo apt-get install -y wget unzip curl
     - script:
         name: exec terraform plan
         code: |
