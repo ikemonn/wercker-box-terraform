@@ -5,16 +5,11 @@ build:
         name: echo
         code: |
           echo "This is wercker box for terraform!!"
-    - script:
-        name: exec terraform plan
-        code: |
-          sh ./terraform/aws/check_env.sh
           pwd
           ls -la
-deploy:
-  steps:
     - script:
         name: exec terraform plan
         code: |
-          echo `pwd`
+          pwd
           ls -la
+          sh ./terraform/aws/check_env.sh
