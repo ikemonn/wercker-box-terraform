@@ -8,6 +8,6 @@ build:
 deploy:
   steps:
     - script:
-        name: echo
+        name: exec terraform plan
         code: |
-          echo "This is wercker box for terraform!!"
+          sh ./terraform/aws/check_env.sh
