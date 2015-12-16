@@ -19,5 +19,4 @@ build:
           pwd
           ls -la
           ls -l /bin/sh
-          which git
           bash ./terraform/check_env.sh
