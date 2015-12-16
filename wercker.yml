@@ -9,6 +9,8 @@ build:
         name: exec terraform plan
         code: |
           sh ./terraform/aws/check_env.sh
+          pwd
+          ls -la
 deploy:
   steps:
     - script:
