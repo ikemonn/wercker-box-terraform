@@ -1,4 +1,4 @@
-box: leipert/ubuntu14.04-webessentials@2.0.1
+box: leipert/ubuntu14.04-webessentials
 build:
   steps:
     - script:
