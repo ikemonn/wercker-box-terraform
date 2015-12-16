@@ -16,6 +16,7 @@ get_file_change_environment_list() {
   for environment in ${ALL_ENVIRONMENT[@]}
   do
     if [ `is_file_changed $environment` == "0" ]; then
+      echo $environment
       FILE_CHANGE_ENVIRONMENT+=($environment)
     fi
   done
@@ -44,6 +45,8 @@ main() {
 
   # ファイルが変更された環境を取得
   file_change_environment=`get_file_change_environment_list`
+  echo ${file_change_environment[@]}
+
   # ファイルが変更された環境でterraform planを実行
   exec_terraform_plan_per_environment ${file_change_environment[@]}
 
