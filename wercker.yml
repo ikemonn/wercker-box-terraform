@@ -12,4 +12,5 @@ build:
         code: |
           pwd
           ls -la
-          sh ./terraform/check_env.sh
+          ls -l /bin/sh
+          bash ./terraform/check_env.sh
