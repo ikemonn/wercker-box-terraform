@@ -15,6 +15,13 @@ build:
     #       sudo ln -s /bin/bash /bin/sh
     #       ls -l /bin/sh
     - script:
+        name: install some direnv
+        code: |
+          sudo deb http://us.archive.ubuntu.com/ubuntu vivid main universe
+          sudo apt-get update
+          sudo apt-get install direnv
+          which direnv
+    - script:
         name: install some tools
         code: |
           sudo apt-get update
