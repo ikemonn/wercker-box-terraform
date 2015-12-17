@@ -13,7 +13,8 @@ build:
         code: |
           sudo apt-get update
           sudo apt-get -f install
-          sudo apt-get install -y wget unzip curl git
+          # sudo apt-get install -y wget unzip curl git
+          sudo apt-get install -y curl
     - script:
         name: install direnv
         code: |
@@ -21,7 +22,9 @@ build:
            && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
            && install /tmp/direnv /bin/direnv \
            && rm /tmp/direnv
+          cat ~/.bashrc
           echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+          cat ~/.bashrc
           source ~/.bashrc
           direnv
     - script:
