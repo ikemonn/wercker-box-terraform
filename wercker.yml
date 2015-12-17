@@ -19,11 +19,12 @@ build:
         code: |
           sudo apt-get update
           sudo apt-get -f install
-          sudo apt-get install -y wget unzip curl
+          sudo apt-get install -y wget unzip curl git
     - script:
         name: exec terraform plan
         code: |
           pwd
           ls -la
           ls -l /bin/sh
+          which git
           bash ./terraform/check_env.sh
