@@ -95,5 +95,4 @@ build:
               cd -
             done
           }
-
           main
