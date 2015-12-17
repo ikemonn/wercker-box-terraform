@@ -30,8 +30,8 @@ build:
     - script:
         name: use direnv
         code: |
+          direnv hook bash
           echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
-          eval "$(direnv hook bash)"
           cat terraform/aws/evaluation/.envrc
           cd terraform/aws/evaluation/
           pwd
@@ -40,7 +40,7 @@ build:
           echo "================ 1 =================="
           echo $HOGE
           echo "================ 2 =================="
-
+          export -p
     - script:
         name: exec terraform plan
         code: |
