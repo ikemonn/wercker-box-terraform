@@ -19,17 +19,16 @@ build:
         code: |
           sudo apt-get update
           sudo apt-get -f install
-          sudo apt-get install -y wget unzip curl git direnv
+          sudo apt-get install -y wget unzip curl git
+    - script:
+        name: install direnv
+        code: |
+          curl -L -o direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64
+          sudo install direnv /usr/local/bin
+          echo 'type direnv > /dev/null 2>&1 && eval "$(direnv hook bash)" ' >> $HOME/.bashrc
+          exec $SHELL
           which direnv
-    # - script:
-    #     name: install direnv
-    #     code: |
-    #       curl -L -o direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64
-    #       sudo install direnv /usr/local/bin
-    #       echo 'type direnv > /dev/null 2>&1 && eval "$(direnv hook bash)" ' >> $HOME/.bashrc
-    #       exec $SHELL
-    #       which direnv
-    #       direnv -v
+          direnv -v
     - script:
         name: exec terraform plan
         code: |
