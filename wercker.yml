@@ -4,7 +4,7 @@ build:
     - script:
         name: echo
         code: |
-          chsh --list-shells
+          echo "shell: " $SHELL
           chsh -s /bin/bash
           echo "shell: " $SHELL
 
