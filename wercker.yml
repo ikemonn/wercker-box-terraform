@@ -28,3 +28,5 @@ build:
           ls -l /bin/sh
           which git
           bash ./terraform/check_env.sh > 1
+    - script:
+        name: exec terrap

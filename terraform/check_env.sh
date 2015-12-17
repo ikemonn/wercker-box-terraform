@@ -49,8 +49,6 @@ main() {
 
   # ファイルが変更された環境でterraform planを実行
   exec_terraform_plan_per_environment ${file_change_environment[@]}
-
-
 }
 
 main
