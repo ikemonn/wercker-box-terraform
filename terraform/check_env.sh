@@ -16,7 +16,7 @@ get_file_change_environment_list() {
   for environment in ${ALL_ENVIRONMENT[@]}
   do
     if [ `is_file_changed $environment` == "0" ]; then
-      echo $environment
+      # echo $environment
       FILE_CHANGE_ENVIRONMENT+=($environment)
     fi
   done
