@@ -8,13 +8,12 @@ build:
           chsh -s /bin/bash
           echo "shell: " $SHELL
 
-    - script:
-        name: install some tools
-        code: |
-          sudo apt-get update
-          sudo apt-get -f install
-          # sudo apt-get install -y wget unzip curl git
-          sudo apt-get install -y curl
+    # - script:
+    #     name: install some tools
+    #     code: |
+    #       sudo apt-get update
+    #       sudo apt-get -f install
+    #       sudo apt-get install -y wget unzip curl git
     - script:
         name: env var test
         code: |
