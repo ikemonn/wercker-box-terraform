@@ -36,7 +36,7 @@ build:
            && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
            && install /tmp/direnv $PREFIX/bin/direnv \
            && rm /tmp/direnv
-          which direnv
+          direnv
 
     - script:
         name: exec terraform plan
