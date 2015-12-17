@@ -2,11 +2,28 @@ box: ubuntu
 build:
   steps:
     - script:
-        name: install some tools
+        name: apt-get update
         code: |
           sudo apt-get update
+          # 依存関係の解消
           sudo apt-get -f install
-          sudo apt-get install -y wget unzip curl git
+    - script:
+        name: install git and check file diff
+        code: |
+          sudo apt-get install -y git
+          exit 0
+          # for environment in "evaluation staging production"
+          # do
+          #   if [ `is_file_changed $environment` == "0" ]; then
+          #     # echo $environment
+          #     FILE_CHANGE_ENVIRONMENT+=($environment)
+          #   fi
+          # done
+          # echo ${FILE_CHANGE_ENVIRONMENT[@]}
+    - script:
+        name: install some tools
+        code: |
+          sudo apt-get install -y wget unzip curl
     - script:
         name: setup terraform
         code: |
@@ -20,28 +37,6 @@ build:
           unzip terraform_${VERSION}_linux_amd64.zip
           rm terraform_${VERSION}_linux_amd64.zip
           terraform -v
-    # - script:
-    #     name: env var test
-    #     code: |
-    #       export -p
-    #       environment="evaluation"
-    #       cd terraform/aws/$environment
-    #       eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
-    #       echo "============="
-    #       echo $TF_VAR_hoge
-    #       echo "============="
-    #
-    #       cd -
-    #       environment="staging"
-    #       cd terraform/aws/$environment
-    #       eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
-    #       echo "============="
-    #       echo $TF_VAR_hoge
-    #       echo "============="
-    # - script:
-    #     name: exec terraform plan
-    #     code: |
-    #       bash ./terraform/check_env.sh > 1
     - script:
         name: exec terrap
         code: |
@@ -112,9 +107,6 @@ build:
               terraform plan
               cd -
             done
-
-
-
           }
 
           main
