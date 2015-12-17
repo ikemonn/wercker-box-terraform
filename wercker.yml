@@ -31,6 +31,7 @@ build:
         name: use direnv
         code: |
           echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
+          eval "$(direnv hook bash)"
           cat terraform/aws/evaluation/.envrc
           cd terraform/aws/evaluation/
           pwd
