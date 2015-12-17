@@ -73,8 +73,8 @@ build:
             for environment in ${environment_list[@]}
             do
               cd $TERRAFORM_DIR/$environment
-              eval export TF_VAR_aws_access_key='${'$environment'_AWS_ACCESS_KEY}'
-              eval export TF_VAR_aws_secret_key='${'$environment'_AWS_SECRET_KEY}'
+              eval export AWS_ACCESS_KEY_ID='${'$environment'_AWS_ACCESS_KEY}'
+              eval export AWS_SECRET_ACCESS_KEY='${'$environment'_AWS_SECRET_KEY}'
               export -p
               echo `pwd`
               terraform plan
