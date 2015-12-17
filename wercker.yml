@@ -7,13 +7,13 @@ build:
           echo "This is wercker box for terraform!!"
           pwd
           ls -la
-    - script:
-        name: change dash to bash
-        code: |
-          ls -l /bin/sh
-          sudo rm /bin/sh
-          sudo ln -s /bin/bash /bin/sh
-          ls -l /bin/sh
+    # - script:
+    #     name: change dash to bash
+    #     code: |
+    #       ls -l /bin/sh
+    #       sudo rm /bin/sh
+    #       sudo ln -s /bin/bash /bin/sh
+    #       ls -l /bin/sh
     - script:
         name: install some tools
         code: |
@@ -27,4 +27,4 @@ build:
           ls -la
           ls -l /bin/sh
           which git
-          bash ./terraform/check_env.sh
+          bash ./terraform/check_env.sh > 1
