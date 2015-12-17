@@ -1,13 +1,108 @@
-box: debian
+box: ubuntu
 build:
   steps:
     - script:
-        name: echo
+        name: apt-get update
         code: |
-          echo "This is wercker box for terraform!!"
-deploy:
-  steps:
+          sudo apt-get update
+          # 依存関係の解消
+          sudo apt-get -f install
     - script:
-        name: echo
+        name: install some tools
         code: |
-          echo "This is wercker box for terraform!!"
+          sudo apt-get install -y wget unzip curl git
+    - script:
+        name: setup terraform
+        code: |
+          # create terraform directory and export PATH
+          mkdir -p $HOME/terraform
+          export PATH=$PATH:$HOME/terraform
+          # download terraform
+          VERSION=0.6.8
+          cd $HOME/terraform
+          wget -q https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip
+          unzip terraform_${VERSION}_linux_amd64.zip
+          rm terraform_${VERSION}_linux_amd64.zip
+          terraform -v
+    - script:
+        name: exec terrap
+        code: |
+          # 引数で渡されたディレクトリのファイルが変更されたか？
+          is_file_changed() {
+            local environment=$1
+            # 実行ステータスだけ取得したいので、grepの結果は出力しない
+            git diff --name-only HEAD HEAD^ \
+              | grep $environment/ >> /dev/null
+            echo $?
+          }
+
+          # ファイルが変更されたディレクトリの配列を取得
+          get_file_change_environment_list() {
+            local environment
+            for environment in ${ALL_ENVIRONMENT[@]}
+            do
+              if [ `is_file_changed $environment` == "0" ]; then
+                # echo $environment
+                FILE_CHANGE_ENVIRONMENT+=($environment)
+              fi
+            done
+            echo ${FILE_CHANGE_ENVIRONMENT[@]}
+          }
+
+          # terraform planを与えられた環境で行う
+          exec_terraform_plan_per_environment() {
+            local environment_list=$@
+            for environment in ${environment_list[@]}
+            do
+              echo "file change dir is ${environment}"
+              cd $TERRAFORM_DIR/$environment
+              eval export AWS_ACCESS_KEY_ID='${'$environment'_AWS_ACCESS_KEY}'
+              eval export AWS_SECRET_ACCESS_KEY='${'$environment'_AWS_SECRET_KEY}'
+              export TF_VAR_aws_access_key=$AWS_ACCESS_KEY_ID
+              export TF_VAR_aws_secret_key=$AWS_SECRET_ACCESS_KEY
+              export -p
+              echo `pwd`
+              terraform plan
+              cd -
+            done
+          }
+
+          main() {
+            readonly ALL_ENVIRONMENT=("evaluation" "staging" "production")
+            readonly EVALUATION="evaluation"
+            readonly STAGING="staging"
+            readonly PRODUCTION="production"
+            readonly TERRAFORM_DIR="terraform/aws/"
+
+            FILE_CHANGE_ENVIRONMENT=()
+
+            # ファイルが変更された環境を取得
+            file_change_environment=`get_file_change_environment_list`
+            echo ${file_change_environment[@]}
+
+            # ファイルが変更された環境でterraform planを実行
+            for environment in ${file_change_environment[@]}
+            do
+              echo "file change dir is ${environment}"
+              cd $TERRAFORM_DIR/$environment
+              eval export AWS_ACCESS_KEY_ID='${'$environment'_AWS_ACCESS_KEY}'
+              eval export AWS_SECRET_ACCESS_KEY='${'$environment'_AWS_SECRET_KEY}'
+              export TF_VAR_aws_access_key=$AWS_ACCESS_KEY_ID
+              export TF_VAR_aws_secret_key=$AWS_SECRET_ACCESS_KEY
+              export -p
+              echo `pwd`
+              terraform plan
+              cd -
+            done
+          }
+          main
+  after-steps:
+    - script:
+        name: terraform plan
+        code: |
+          cd terraform/aws/production/
+          terraform plan
+          cd -
+          cd terraform/aws/evaluation/
+          terraform plan
+          cd -
