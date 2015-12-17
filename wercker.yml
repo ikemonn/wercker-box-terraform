@@ -96,3 +96,13 @@ build:
             done
           }
           main
+  after-steps:
+    - script:
+        name: terraform plan
+        code: |
+          cd terraform/aws/production/
+          terraform plan
+          cd -
+          cd terraform/aws/evaluation/
+          terraform plan
+          cd -
