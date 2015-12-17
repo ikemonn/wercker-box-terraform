@@ -60,6 +60,7 @@ build:
             do
               cd $TERRAFORM_DIR/$environment
               echo `pwd`
+
               cd -
             done
           }
