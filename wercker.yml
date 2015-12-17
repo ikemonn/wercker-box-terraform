@@ -16,10 +16,11 @@ build:
     - script:
         name: install direnv
         code: |
-          curl -fsSL -o /tmp/direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64 \
+          curl -sSL -o /tmp/direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64 \
            && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
            && install /tmp/direnv $PREFIX/bin/direnv \
            && rm /tmp/direnv
+          echo $PREFIX
           direnv
     - script:
         name: exec terraform plan
