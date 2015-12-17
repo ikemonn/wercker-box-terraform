@@ -2,70 +2,45 @@ box: ubuntu
 build:
   steps:
     - script:
-        name: echo
+        name: install some tools
         code: |
-          echo "shell: " $SHELL
-          chsh -s /bin/bash
-          echo "shell: " $SHELL
-
-    # - script:
-    #     name: install some tools
-    #     code: |
-    #       sudo apt-get update
-    #       sudo apt-get -f install
-    #       sudo apt-get install -y wget unzip curl git
+          sudo apt-get update
+          sudo apt-get -f install
+          sudo apt-get install -y wget unzip curl git
     - script:
-        name: env var test
+        name: setup terraform
         code: |
-          export -p
-          environment="evaluation"
-          cd terraform/aws/$environment
-          eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
-          echo "============="
-          echo $TF_VAR_hoge
-          echo "============="
-
-          cd -
-          environment="staging"
-          cd terraform/aws/$environment
-          eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
-          echo "============="
-          echo $TF_VAR_hoge
-          echo "============="
+          # create terraform directory and export PATH
+          mkdir -p $HOME/terraform
+          export PATH=$PATH:$HOME/terraform
+          # download terraform
+          VERSION=0.6.8
+          cd $HOME/terraform
+          wget https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip
+          unzip terraform_${VERSION}_linux_amd64.zip
+          rm terraform_${VERSION}_linux_amd64.zip
     # - script:
-    #     name: install direnv
+    #     name: env var test
     #     code: |
-    #       curl -sSL -o /tmp/direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64 \
-    #        && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
-    #        && install /tmp/direnv /bin/direnv \
-    #        && rm /tmp/direnv
-    #       cat ~/.bashrc
-    #       echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-    #       cat ~/.bashrc
-    #       source ~/.bashrc
-    #       direnv
-    # - script:
-    #     name: use direnv
-    #     code: |
-    #       direnv hook bash
-    #       echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
-    #       cat terraform/aws/evaluation/.envrc
-    #       cd terraform/aws/evaluation/
-    #       pwd
-    #       echo "================ 0 =================="
-    #       direnv allow
-    #       echo "================ 1 =================="
-    #       echo $HOGE
-    #       echo "================ 2 =================="
     #       export -p
-    - script:
-        name: exec terraform plan
-        code: |
-          pwd
-          ls -la
-          ls -l /bin/sh
-          which git
-          bash ./terraform/check_env.sh > 1
+    #       environment="evaluation"
+    #       cd terraform/aws/$environment
+    #       eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
+    #       echo "============="
+    #       echo $TF_VAR_hoge
+    #       echo "============="
+    #
+    #       cd -
+    #       environment="staging"
+    #       cd terraform/aws/$environment
+    #       eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
+    #       echo "============="
+    #       echo $TF_VAR_hoge
+    #       echo "============="
+    # - script:
+    #     name: exec terraform plan
+    #     code: |
+    #       bash ./terraform/check_env.sh > 1
     - script:
         name: exec terrap
         code: |
@@ -97,12 +72,11 @@ build:
             for environment in ${environment_list[@]}
             do
               cd $TERRAFORM_DIR/$environment
-              export TF_VAR_hoge=${$environment_AWS_ACCESS_KEY}
-              echo "============="
-              echo $TF_VAR_hoge
-              echo "============="
+              eval export TF_VAR_aws_access_key='${'$environment'_AWS_ACCESS_KEY}'
+              eval export TF_VAR_aws_secret_key='${'$environment'_AWS_SECRET_KEY}'
+              export -p
               echo `pwd`
-
+              terraform plan
               cd -
             done
           }
