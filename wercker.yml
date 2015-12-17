@@ -16,31 +16,48 @@ build:
           # sudo apt-get install -y wget unzip curl git
           sudo apt-get install -y curl
     - script:
-        name: install direnv
+        name: env var test
         code: |
-          curl -sSL -o /tmp/direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64 \
-           && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
-           && install /tmp/direnv /bin/direnv \
-           && rm /tmp/direnv
-          cat ~/.bashrc
-          echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-          cat ~/.bashrc
-          source ~/.bashrc
-          direnv
-    - script:
-        name: use direnv
-        code: |
-          direnv hook bash
-          echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
-          cat terraform/aws/evaluation/.envrc
-          cd terraform/aws/evaluation/
-          pwd
-          echo "================ 0 =================="
-          direnv allow
-          echo "================ 1 =================="
-          echo $HOGE
-          echo "================ 2 =================="
-          export -p
+          environment="evaluation"
+          cd terraform/aws/$environment
+          export TF_VAR_hoge=${$environment_AWS_ACCESS_KEY}
+          echo "============="
+          echo $TF_VAR_hoge
+          echo "============="
+
+          cd -
+          environment="staging"
+          cd terraform/aws/$environment
+          export TF_VAR_hoge=${$environment_AWS_ACCESS_KEY}
+          echo "============="
+          echo $TF_VAR_hoge
+          echo "============="
+    # - script:
+    #     name: install direnv
+    #     code: |
+    #       curl -sSL -o /tmp/direnv https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64 \
+    #        && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
+    #        && install /tmp/direnv /bin/direnv \
+    #        && rm /tmp/direnv
+    #       cat ~/.bashrc
+    #       echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+    #       cat ~/.bashrc
+    #       source ~/.bashrc
+    #       direnv
+    # - script:
+    #     name: use direnv
+    #     code: |
+    #       direnv hook bash
+    #       echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
+    #       cat terraform/aws/evaluation/.envrc
+    #       cd terraform/aws/evaluation/
+    #       pwd
+    #       echo "================ 0 =================="
+    #       direnv allow
+    #       echo "================ 1 =================="
+    #       echo $HOGE
+    #       echo "================ 2 =================="
+    #       export -p
     - script:
         name: exec terraform plan
         code: |
@@ -80,6 +97,10 @@ build:
             for environment in ${environment_list[@]}
             do
               cd $TERRAFORM_DIR/$environment
+              export TF_VAR_hoge=${$environment_AWS_ACCESS_KEY}
+              echo "============="
+              echo $TF_VAR_hoge
+              echo "============="
               echo `pwd`
 
               cd -
