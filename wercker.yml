@@ -8,25 +8,9 @@ build:
           # 依存関係の解消
           sudo apt-get -f install
     - script:
-        name: install git and check file diff
-        code: |
-          sudo apt-get install -y git
-          # for environment in "evaluation staging production"
-          # do
-          #   if [ `is_file_changed $environment` == "0" ]; then
-          #     # echo $environment
-          #     FILE_CHANGE_ENVIRONMENT+=($environment)
-          #   fi
-          # done
-          # echo ${FILE_CHANGE_ENVIRONMENT[@]}
-    - script:
-        name: exit
-        code: |
-          exit 0
-    - script:
         name: install some tools
         code: |
-          sudo apt-get install -y wget unzip curl
+          sudo apt-get install -y wget unzip curl git
     - script:
         name: setup terraform
         code: |
