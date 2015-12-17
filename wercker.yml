@@ -19,7 +19,7 @@ build:
         code: |
           environment="evaluation"
           cd terraform/aws/$environment
-          export TF_VAR_hoge=${$environment_AWS_ACCESS_KEY}
+          eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
           echo "============="
           echo $TF_VAR_hoge
           echo "============="
