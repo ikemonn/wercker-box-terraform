@@ -17,6 +17,7 @@ build:
     - script:
         name: env var test
         code: |
+          export -p
           environment="evaluation"
           cd terraform/aws/$environment
           eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
@@ -27,7 +28,7 @@ build:
           cd -
           environment="staging"
           cd terraform/aws/$environment
-          export TF_VAR_hoge=${$environment_AWS_ACCESS_KEY}
+          eval export TF_VAR_hoge='${'$environment'_AWS_ACCESS_KEY}'
           echo "============="
           echo $TF_VAR_hoge
           echo "============="
