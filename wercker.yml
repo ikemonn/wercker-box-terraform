@@ -81,4 +81,4 @@ build:
           exec_terraform_plan_per_environment ${file_change_environment[@]}
 
 
-          main
+          
