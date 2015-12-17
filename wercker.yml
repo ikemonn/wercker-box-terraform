@@ -8,6 +8,13 @@ build:
           pwd
           ls -la
     - script:
+        name: change dash to bash
+        code: |
+          ls -l /bin/sh
+          sudo rm /bin/sh
+          sudo ln -s /bin/bash /bin/sh
+          ls -l /bin/sh
+    - script:
         name: install some tools
         code: |
           sudo apt-get update
