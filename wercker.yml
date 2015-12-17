@@ -29,8 +29,13 @@ build:
           echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
           cat terraform/aws/evaluation/.envrc
           cd terraform/aws/evaluation/
+          pwd
+          echo "================ 0 =================="
           direnv allow
+          echo "================ 1 =================="
           echo $HOGE
+          echo "================ 2 =================="
+
     - script:
         name: exec terraform plan
         code: |
