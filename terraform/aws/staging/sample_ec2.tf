@@ -1,4 +1,4 @@
-resource "aws_instance" "evaluation_sample" {
+resource "aws_instance" "staging_sample" {
     ami = "ami-908a2f90"
     instance_type = "t2.micro"
     availability_zone = "ap-northeast-1a"
