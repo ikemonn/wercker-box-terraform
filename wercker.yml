@@ -20,7 +20,17 @@ build:
            && shasum /tmp/direnv | grep -q 'ccc0b6569c39951d22ce7379b15fdffddb62d82d' \
            && install /tmp/direnv /bin/direnv \
            && rm /tmp/direnv
+          echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+          source ~/.bashrc
           direnv
+    - script:
+        name: use direnv
+        code: |
+          echo 'export HOGE="hoge env value"' >> terraform/aws/evaluation/.envrc
+          cat terraform/aws/evaluation/.envrc
+          cd terraform/aws/evaluation/
+          direnv allow
+          echo $HOGE
     - script:
         name: exec terraform plan
         code: |
