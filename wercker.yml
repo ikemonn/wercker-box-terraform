@@ -4,9 +4,10 @@ build:
     - script:
         name: echo
         code: |
-          echo "This is wercker box for terraform!!"
-          pwd
-          ls -la
+          chsh --list-shells
+          chsh -s /bin/bash
+          echo "shell: " $SHELL
+
     - script:
         name: install some tools
         code: |
